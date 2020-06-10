@@ -13,6 +13,13 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = { 
+  "userRandomID": {
+    id: "userRandomID", 
+    email: "user@example.com", 
+    password: "purple-monkey-dinosaur"
+  },
+}
 
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase , username: req.cookies["username"]};
@@ -88,6 +95,20 @@ app.post("/logout", (req,res) => {
 
 app.get("/register", (req, res) => {
   res.render("register");
+})
+
+app.post("/register", (req,res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const id = generateRandomString();
+  users[id] = {
+    id,
+    email,
+    password,
+  }
+  console.log(users);
+  res.cookie("user_id",id);
+  res.redirect("/urls");
 })
 
 function generateRandomString() {
