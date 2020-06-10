@@ -84,6 +84,11 @@ app.post("/login", (req,res) => {
   res.redirect("/urls");
 })
 
+app.post("/logout", (req,res) => {
+  res.clearCookie("username");
+  res.redirect("/urls");
+})
+
 function generateRandomString() {
   return Math.random().toString(36).substr(2, 6);
 }
