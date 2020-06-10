@@ -30,9 +30,6 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars)
 })
 
-
-
-
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -87,6 +84,10 @@ app.post("/login", (req,res) => {
 app.post("/logout", (req,res) => {
   res.clearCookie("username");
   res.redirect("/urls");
+})
+
+app.get("/register", (req, res) => {
+  res.render("register");
 })
 
 function generateRandomString() {
