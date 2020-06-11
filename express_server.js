@@ -13,27 +13,29 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
-const users = { 
+const users = {
   "userRandomID": {
-    id: "userRandomID", 
-    email: "user@example.com", 
+    id: "userRandomID",
+    email: "user@example.com",
     password: "purple-monkey-dinosaur"
   },
 }
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase , username: req.cookies["username"]};
+  const userID = req.cookies["user_id"];
+  console.log("get be urls umade, inam userName hast: \n"+ userID);
+  let templateVars = { urls: urlDatabase , user: users[userID]};
   res.render("urls_index", templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  let templateVars = {username: req.cookies["username"]};
+  let templateVars = {user: users[req.cookies["user_id"]]};
   res.render("urls_new",templateVars);
 });
 
 app.get("/urls/:shortURL", (req, res) => {
   const shortURL= req.params.shortURL;
-  let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL] , username: req.cookies["username"]};
+  let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL] , user: users[req.cookies["user_id"]]};
   res.render("urls_show", templateVars)
 })
 
@@ -51,7 +53,6 @@ app.get("/hello", (req, res) => {
 
 app.get("/u/:shortURL", (req, res) => {
   const longURL = urlDatabase[req.params.shortURL];
-  console.log(longURL);
   res.redirect(longURL);
 })
 
@@ -63,7 +64,6 @@ app.post("/urls", (req, res) => {
   const longURL = req.body.longURL;
   const shortURL = generateRandomString();
   urlDatabase[shortURL]=longURL;
-  console.log(urlDatabase);
   res.redirect(`/urls/${shortURL}`);
 });
 
@@ -71,7 +71,6 @@ app.post("/urls", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL
   delete urlDatabase[shortURL];
-  console.log(urlDatabase);
   res.redirect("/urls");
 })
 
@@ -79,7 +78,6 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 app.post("/urls/:shortURL", (req, res) => {
   let editShort = req.params.shortURL;
   urlDatabase[editShort] = req.body.editted;
-  console.log(urlDatabase)
   res.redirect("/urls/");
 });
 
@@ -89,7 +87,7 @@ app.post("/login", (req,res) => {
 })
 
 app.post("/logout", (req,res) => {
-  res.clearCookie("username");
+  res.clearCookie("user_id");
   res.redirect("/urls");
 })
 
@@ -106,7 +104,6 @@ app.post("/register", (req,res) => {
     email,
     password,
   }
-  console.log(users);
   res.cookie("user_id",id);
   res.redirect("/urls");
 })
