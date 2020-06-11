@@ -11,14 +11,10 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
       <% if (!user) { %>
-      <form action="/register" method="GET">
-        <button type="submit" class="btn btn-primary">Register</button>
-      </form>
-      <form action="/login" method="GET">
-        <button type="submit" class="btn btn-primary">Login</button>
-      </form>
+      <a href= "/register" class="navbar-text mr-3">Register</a>
+      <a href= "/login" class="navbar-text">Login</a>
       <% } else { %>
-      <span>Logged In As: <%=user.email%></span>
+      <span>Logged In As: <%= user.email %></span>
       <form class="form-inline my-2 my-lg-0" action="/logout" method="POST">
         <div class="form-group row">
           <button type="submit" class="btn btn-outline-dark mr-3 ml-4">Logout</button>
