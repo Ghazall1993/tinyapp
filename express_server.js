@@ -21,6 +21,16 @@ const users = {
   },
 }
 
+//return userID if it finds a user corresponds to the email
+const findUserByEmail = email => {
+  for (let user in users) {
+    if (users[user].email === email) {
+      return user;
+    }
+  }
+  return false;
+}
+
 app.get("/urls", (req, res) => {
   const userID = req.cookies["user_id"];
   console.log("get be urls umade, inam userName hast: \n"+ userID);
@@ -98,6 +108,12 @@ app.get("/register", (req, res) => {
 app.post("/register", (req,res) => {
   const email = req.body.email;
   const password = req.body.password;
+  if (((email.length === 0) && (password.length === 0))) {
+    res.status(400).send();
+  } else if (findUserByEmail(email)) {
+    console.log("repeated email :) ")
+    res.status(400).send();
+  }
   const id = generateRandomString();
   users[id] = {
     id,
