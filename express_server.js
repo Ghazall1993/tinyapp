@@ -49,10 +49,6 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
-app.get("/suggestToRegister", (req, res) => {
-  res.render("suggestToRegister");
-})
-
 app.get("/urls/new", (req, res) => {
   if (req.cookies.user_id) {
     let templateVars = { user: users[req.cookies.user_id] };
